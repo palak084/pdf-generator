@@ -8,17 +8,23 @@ const InsightNavigatorCover = () => {
       <style>
         {`
           .booklet-container {
-            width: 100%;
-            min-height: 100vh;
+            width: 794px;          /* A4 width */
+            height: 1123px;        /* A4 height */
             border: 2px solid #008080;
             position: relative;
+            margin: 0 auto;
             text-align: center;
             font-family: "Georgia", serif;
             background: #fff;
             box-sizing: border-box;
-            padding: 40px 20px;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* keep flow top to bottom */
+            align-items: center;
           }
 
+          /* Decorative corners */
           .corner {
             position: absolute;
             font-size: 22px;
@@ -32,29 +38,27 @@ const InsightNavigatorCover = () => {
 
           /* Logo styling */
           .header-logo {
-            width: 260px;   /* Bigger like reference */
-            height: auto;
-            margin: 10px auto 6px auto;
-            display: block;
+            width: 280px;   /* Larger like reference */
+            margin-top: 40px;
+            margin-bottom: 10px;
           }
 
           .website {
             color: #333;
             font-size: 16px;
-            margin-bottom: 30px;
-            text-align: center;
+            margin-bottom: 20px;
           }
 
           /* Blue title bar */
           .title-bar {
             background: #009688;
             color: white;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
-            padding: 14px;
-            margin: 0 auto 25px auto;
-            width: 350px;
-            max-width: 700px; /* wide like reference */
+            padding: 14px 0;
+            width: 1000px;
+            max-width: 650px;   /* wide like reference */
+            margin: 10px auto;
             border-radius: 4px;
             letter-spacing: 1px;
           }
@@ -62,29 +66,27 @@ const InsightNavigatorCover = () => {
           .subtitle {
             font-size: 20px;
             font-weight: bold;
-            margin: 15px 0 25px 0;
-            text-align: center;
+            margin: 10px 0 30px 0;
           }
 
+          /* Navigator image section */
           .navigator-card {
-            margin-top: 10px;
             text-align: center;
+            margin-top: 10px;
           }
 
           .navigator-img {
-            width: 200px;   /* bigger image */
-            height: 150px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-            margin-bottom: 15px;
+            width: 380px;   /* Much bigger to match reference */
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 12px;
           }
 
           .author {
-            margin-top: 10px;
-            font-size: 15px;
+            margin-top: 8px;
+            font-size: 16px;
             font-style: italic;
             color: #333;
-            text-align: center;
           }
         `}
       </style>
@@ -92,14 +94,12 @@ const InsightNavigatorCover = () => {
       {/* Decorative corners */}
       <div className="corner top-left">❧</div>
       <div className="corner top-right">❧</div>
-      <div className="corner bottom-right">❧</div>
+      <div className="corner bottom-left">❧</div>
       <div className="corner bottom-right">❧</div>
 
       {/* Header */}
-      <div className="header">
-        <img src={logo} alt="Logo" className="header-logo" />
-        <p className="website">Career-9.com</p>
-      </div>
+      <img src={logo} alt="Logo" className="header-logo" />
+      <p className="website">Career-9.com</p>
 
       {/* Blue Title Bar */}
       <div className="title-bar">INSIGHT NAVIGATOR</div>
@@ -109,17 +109,9 @@ const InsightNavigatorCover = () => {
 
       {/* Navigator Image + Author */}
       <div className="navigator-card">
-        <img
-          src={image}
-          alt="Navigator 360"
-          className="navigator-img"
-        />
+        <img src={image} alt="Navigator 360" className="navigator-img" />
         <p className="author">Dr. Mira Desai</p>
       </div>
-
-      {/* Decorative corners bottom */}
-      <div className="corner bottom-left">❧</div>
-      <div className="corner bottom-right">❧</div>
     </div>
   );
 };
