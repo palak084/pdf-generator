@@ -1,6 +1,6 @@
 import React from "react";
-import logo from "./media/kcc.jpg"; 
-import image from "./media/image.png";
+import logo from "../media/kcc.jpg"; 
+import image from "../media/image.png";
 
 const InsightNavigatorCover = () => {
   return (

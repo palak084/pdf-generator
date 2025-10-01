@@ -1,31 +1,42 @@
 import React, { useRef } from "react";
-import InsightNavigatorCover from "./InsightNavigatorCover";
-import InsightNavigatorPage2 from "./InsightNavigatorPage2"; // <-- create this component
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
+// Dynamically import all components inside ./pages
+const pageModules = require.context("./pages", false, /\.jsx$/);
+
+// Sort files to maintain Cover → Page22 order
+const sortedPages = pageModules
+  .keys()
+  .sort((a, b) => {
+    // Ensure Cover comes first, then pages numerically
+    if (a.includes("Cover")) return -1;
+    if (b.includes("Cover")) return 1;
+
+    const numA = parseInt(a.match(/\d+/)?.[0] || "0", 10);
+    const numB = parseInt(b.match(/\d+/)?.[0] || "0", 10);
+    return numA - numB;
+  })
+  .map((key) => pageModules(key).default);
+
 function App() {
-  const coverRef = useRef();
-  const page2Ref = useRef();
+  // Create refs dynamically for each page
+  const pageRefs = sortedPages.map(() => useRef());
 
   const downloadPDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
 
-    // ---- Page 1 (Cover) ----
-    const coverCanvas = await html2canvas(coverRef.current, { scale: 2, useCORS: true });
-    const coverImg = coverCanvas.toDataURL("image/png");
-    const coverHeight = (coverCanvas.height * pdfWidth) / coverCanvas.width;
-    pdf.addImage(coverImg, "PNG", 0, 0, pdfWidth, coverHeight);
+    for (let i = 0; i < pageRefs.length; i++) {
+      const ref = pageRefs[i];
+      const canvas = await html2canvas(ref.current, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // ---- Page 2 ----
-    pdf.addPage();
-    const page2Canvas = await html2canvas(page2Ref.current, { scale: 2, useCORS: true });
-    const page2Img = page2Canvas.toDataURL("image/png");
-    const page2Height = (page2Canvas.height * pdfWidth) / page2Canvas.width;
-    pdf.addImage(page2Img, "PNG", 0, 0, pdfWidth, page2Height);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
+    }
 
-    // ---- Save PDF ----
     pdf.save("InsightNavigator.pdf");
   };
 
@@ -39,17 +50,16 @@ function App() {
         background: "#f9f9f9",
       }}
     >
-      {/* Hidden Pages (not visible to user) */}
+      {/* Hidden pages for rendering */}
       <div style={{ position: "absolute", left: "-9999px" }}>
-        <div ref={coverRef}>
-          <InsightNavigatorCover />
-        </div>
-        <div ref={page2Ref}>
-          <InsightNavigatorPage2 />
-        </div>
+        {sortedPages.map((PageComponent, index) => (
+          <div key={index} ref={pageRefs[index]}>
+            <PageComponent />
+          </div>
+        ))}
       </div>
 
-      {/* Button to download PDF */}
+      {/* Download Button */}
       <button
         onClick={downloadPDF}
         style={{
