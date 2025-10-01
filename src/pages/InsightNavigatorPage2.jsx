@@ -1,89 +1,11 @@
 import React from "react";
+import PageStyle from "../components/PageStyle";
 
 const InsightNavigatorPage2 = () => {
+ 
   return (
     <div className="page2-container">
-      <style>
-        {`
-          .page2-container {
-            width: 794px;         /* A4 width */
-            height: 1123px;       /* A4 height */
-            border: 2px solid #008080;
-            margin: 0 auto;
-            background: #fff;
-            font-family: "Georgia", serif;
-            box-sizing: border-box;
-            padding: 60px 60px 80px 60px; /* balanced padding */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            position: relative;
-          }
-
-          /* Page number top-right */
-          .page-number {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            font-size: 14px;
-            color: #0066cc;
-          }
-
-          /* General Instructions heading */
-          .section-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #0066cc;
-            margin-bottom: 20px;
-          }
-
-          /* English Instructions */
-          .instructions {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #0066cc;
-            margin-bottom: 30px;
-          }
-
-          .instructions li {
-            margin-bottom: 10px;
-          }
-
-          /* Hindi Section Title */
-          .hindi-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #0066cc;
-            margin: 30px 0 15px 0;
-          }
-
-          /* Hindi Instructions */
-          .hindi-instructions {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #0066cc;
-          }
-
-          .hindi-instructions li {
-            margin-bottom: 10px;
-          }
-
-          /* Footer */
-          .footer {
-            position: absolute;
-            bottom: 25px;
-            left: 60px;
-            right: 60px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            font-weight: bold;
-            color: #0066cc;
-          }
-        `}
-      </style>
+      <PageStyle />
 
       {/* Page Number */}
       <div className="page-number">1</div>

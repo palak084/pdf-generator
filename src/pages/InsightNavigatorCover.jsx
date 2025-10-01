@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../media/kcc.jpg"; 
 import image from "../media/image.png";
+import Modal from "../components/Modal";
+import InsightNavigatorPage3 from "./InsightNavigatorPage3";
 
 const InsightNavigatorCover = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   return (
     <div className="booklet-container">
       <style>
@@ -112,6 +117,14 @@ const InsightNavigatorCover = () => {
         <img src={image} alt="Navigator 360" className="navigator-img" />
         <p className="author">Dr. Mira Desai</p>
       </div>
+
+      {/* Download PDF Button */}
+      <button onClick={handleOpenModal} style={{marginTop: 24, padding: "10px 24px", fontSize: 16, background: "#009688", color: "#fff", border: "none", borderRadius: 4, cursor: "pointer"}}>Download PDF</button>
+
+      {/* Modal with generated PDF from InsightNavigatorPage3 */}
+      <Modal isOpen={modalOpen} onClose={handleCloseModal}>
+        <InsightNavigatorPage3 />
+      </Modal>
     </div>
   );
 };

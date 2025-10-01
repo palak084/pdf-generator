@@ -1,4 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import Modal from "./components/Modal";
+import InsightNavigatorPage3 from "./pages/InsightNavigatorPage3";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -20,25 +22,20 @@ const sortedPages = pageModules
   .map((key) => pageModules(key).default);
 
 function App() {
-  // Create refs dynamically for each page
-  const pageRefs = sortedPages.map(() => useRef());
-
-  const downloadPDF = async () => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-
-    for (let i = 0; i < pageRefs.length; i++) {
-      const ref = pageRefs[i];
-      const canvas = await html2canvas(ref.current, { scale: 2, useCORS: true });
+  const [modalOpen, setModalOpen] = useState(false);
+  const page3Ref = useRef(null);
+  const handleOpenModal = async () => {
+    setModalOpen(true);
+    // Download PDF logic
+    if (page3Ref.current) {
+      const canvas = await html2canvas(page3Ref.current);
       const imgData = canvas.toDataURL("image/png");
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
+      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: [794, 1123] });
+      pdf.addImage(imgData, "PNG", 0, 0, 794, 1123);
+      pdf.save("InsightNavigatorPage3.pdf");
     }
-
-    pdf.save("InsightNavigator.pdf");
   };
+  const handleCloseModal = () => setModalOpen(false);
 
   return (
     <div
@@ -50,18 +47,9 @@ function App() {
         background: "#f9f9f9",
       }}
     >
-      {/* Hidden pages for rendering */}
-      <div style={{ position: "absolute", left: "-9999px" }}>
-        {sortedPages.map((PageComponent, index) => (
-          <div key={index} ref={pageRefs[index]}>
-            <PageComponent />
-          </div>
-        ))}
-      </div>
-
       {/* Download Button */}
       <button
-        onClick={downloadPDF}
+        onClick={handleOpenModal}
         style={{
           padding: "12px 24px",
           fontSize: "16px",
@@ -75,6 +63,13 @@ function App() {
       >
         Download PDF
       </button>
+
+      {/* Modal for PDF preview */}
+      <Modal isOpen={modalOpen} onClose={handleCloseModal}>
+        <div ref={page3Ref}>
+          <InsightNavigatorPage3 />
+        </div>
+      </Modal>
     </div>
   );
 }
